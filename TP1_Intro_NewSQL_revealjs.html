@@ -1,0 +1,295 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8" /><meta name="author" content="Andrei Arion ,LesFurets.com tp-bigdata@lesfurets.com" /><title>Intro: Bigdata/SQL</title><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style" /><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport" /><link href="reveal.js/css/reveal.css" rel="stylesheet" /><link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" /><link href="reveal.js/plugin/highlight/styles/sunburst.css" rel="stylesheet" /><script type="text/javascript">document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h1>Intro: Bigdata/SQL</h1><p><small>Andrei Arion ,LesFurets.com tp-bigdata@lesfurets.com</small></p></section><section><section id="plan"><h2>Plan</h2><div class="olist arabic"><ol class="arabic"><li><p><strong>Intro</strong></p></li><li><p>From SQL to NoSQL</p></li><li><p>Scalling MySQL : @LesFurets.com</p></li><li><p>TP: PostgreSQL</p></li></ol></div></section><section id="intro"><h2>Intro</h2><div class="ulist"><ul><li><p>Andrei Arion (AAR)</p></li><li><p>Charles Herriau (CHE)</p></li><li><p>Geoffrey Berrard (GBE)</p></li></ul></div>
+<div class="imageblock" style="float: center"><div class="content"><img src="images/lesfurets2.png" alt="lesfurets2" /></div></div>
+<div class="quoteblock"><blockquote><a href="mailto:tp-bigdata@lesfurets.com">tp-bigdata@lesfurets.com</a></blockquote></div></section><section id="planning"><h2>Planning</h2><div class="literalblock"><div class="content"><pre> Decembre:
+ 2/12 : 08h30 =&gt; Intro + PostgreSQL  AAR (+GBE)
+ 9/12 : 08h30 =&gt; MongoDB             GBE (+AAR)
+16/12 : 08h30 =&gt; MongoDB/ES + P1     CHE (+GBE)</pre></div></div>
+<div class="literalblock"><div class="content"><pre> Janvier:
+ 6/01 : 08h30 =&gt; Cassandra1          CHE (+AAR)
+12/01 : 08h30 =&gt; Apache Spark 1      AAR (+CHE)
+13/01 : 08h30 =&gt; Apache Spark 2      CHE (+AAR)
+19/01 : 08h30 =&gt; Projet 1            AAR (+CHE)</pre></div></div>
+<div class="literalblock"><div class="content"><pre> Fevrier:
+20/01 : 08h30 =&gt; Projet 2              GBE (+CHE)
+27/01 : 08h30 =&gt; Projet groupes 1-5    AAR (+GBE,+CHE)
+ 3/02 : 08h30 =&gt; Projet groupes 6-10   AAR (+GBE,+CHE)</pre></div></div></section><section id="comment"><h2>Comment?</h2><div class="ulist"><ul><li><p>Chaque TP : 30 min Intro + 2h30 pratique</p></li><li><p>Travail en binôme</p></li><li><p>Évaluation en continu &#8594; 5-10 questions/cours</p></li><li><p>Projet: soutenance 30 minutes + 5 min questions</p></li></ul></div></section><section id="plan-2"><h2>Plan</h2><div class="olist arabic"><ol class="arabic"><li><p>Intro</p></li><li><p><strong>From SQL to NoSQL</strong></p><div class="olist loweralpha"><ol class="loweralpha" type="a"><li><p>Scalling a simple application</p></li><li><p>From relational to non-relational databases</p></li></ol></div></li><li><p>Scalling MySQL : @LesFurets.com</p></li><li><p>PostgreSQL + TP</p></li></ol></div></section><section id="why"><h2>Why !</h2></section><section id="adn-sequencing"><h2>ADN sequencing</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/sequencing_cost.png" alt="sequencing cost" height="400px" /></div></div>
+<div class="quoteblock"><blockquote>Processing the sequenced data has become the bottleneck!</blockquote><div class="attribution">&#8212; Andy Petrella</div></div>
+<div class="paragraph"><p><a href="http://pt.slideshare.net/noootsab/lightning-fast-genomics-with-spark-adam-and-scala">Lightning fast genomics with Spark Adam and Scala</a></p></div></section><section id="building-a-simple-web-analytics-application"><h2>Building a simple web analytics application</h2><div class="paragraph"><p>Bigdata by Nathan Marz</p></div></section><section id="simple-web-analytics-application"><h2>Simple web analytics application</h2><div class="ulist"><ul><li><p>track the numbre of pageviews for each URL</p></li><li><p>what are the top 100 URls</p></li></ul></div>
+<div class="imageblock" style=""><div class="content"><img src="images/web-analytics-application.png" alt="web analytics application" /></div></div></section><section id="simplest-architecture"><h2>Simplest architecture</h2><div class="ulist"><ul><li><p>track the numbre of pageviews for each URL</p></li><li><p>what are the top 100 URls</p></li></ul></div>
+<div class="imageblock" style=""><div class="content"><img src="images/diag-2c47d69139a3a533431c010803613c85.png" alt="diag 2c47d69139a3a533431c010803613c85" /></div></div></section><section id="queries"><h2>Queries</h2><div class="ulist"><ul><li class="fragment"><p>insert a pageview</p></li><li class="fragment"><p>update pageviews</p></li><li class="fragment"><p>top 100 URLs for a client</p></li></ul></div></section><section id="insert-pageviews"><h2>Insert pageviews</h2><div class="imageblock" style=""><div class="content"><img src="images/diag-e72aa14a7a82e650bce753371f5ba0ed.png" alt="diag e72aa14a7a82e650bce753371f5ba0ed" /></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql"> INSERT INTO PageViews VALUES
+     (1,1,"http://www.lesfurets.com/index.html",1);
+ INSERT INTO PageViews VALUES
+     (2,2,"http://Website.com/base.html",1);
+ INSERT INTO PageViews VALUES
+     (3,1,"http://www.lesfurets.com/assurance-auto",1);</code></pre></div></div></section><section id="update-pageviews"><h2>Update pageviews</h2><div class="imageblock" style=""><div class="content"><img src="images/diag-e72aa14a7a82e650bce753371f5ba0ed.png" alt="diag e72aa14a7a82e650bce753371f5ba0ed" /></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql"> UPDATE PageViews SET page_views = page_views+1
+ WHERE user_id="1" AND URL="http://www.lesfurets.com/index.html";</code></pre></div></div></section><section id="top-100-urls-for-a-client"><h2>Top 100 URLs for a client</h2><div class="imageblock" style=""><div class="content"><img src="images/diag-e72aa14a7a82e650bce753371f5ba0ed.png" alt="diag e72aa14a7a82e650bce753371f5ba0ed" /></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql">SELECT URL,page_views FROM PageViews
+WHERE user_id='1'
+ORDER BY page_views DESC LIMIT 100</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>En pratique la mise a jour des pages peut etre plus complexe necessiter des transactions et des calculs
+ce qui va agraver les choses</p></div></aside></section><section id="production-load"><h2>Production load</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/pic_charge.jpeg" alt="pic charge" height="400px" /></div></div></section><section id="timeouts"><h2>Timeouts</h2><div class="imageblock" style=""><div class="content"><img src="images/diag-1c5935faf499cbe328c035c88da39c71.png" alt="diag 1c5935faf499cbe328c035c88da39c71" /></div></div>
+<div class="paragraph"><p>"Timeout error on inserting to the database"</p></div>
+<aside class="notes"><div class="paragraph"><p>Une fois qu&#8217;on a mis en prod notre systeme d&#8217;analytics on commence a avoir des timeouts.
+Ceci ce passe frequement pendant des pics de charge (exemple des pubs tele pour LesFurets.com).</p></div>
+<div class="paragraph"><p>La vitesse d&#8217;arrivee des Pageviews dans le systeme est plus grande que ce qu&#8217;on peux inserer et on commence a avoir
+des erreurs et des evenements ne sont pas inserees dans la base.</p></div></aside></section><section id="fix-1-queuing"><h2>Fix#1 Queuing</h2><div class="imageblock" style=""><div class="content"><img src="images/diag-62c5b2a3989ba580bb1cd4d166d74d87.png" alt="diag 62c5b2a3989ba580bb1cd4d166d74d87" /></div></div>
+<aside class="notes"><div class="paragraph"><p>Une solution simple pour reguler le flux c&#8217;est de rajouter une queue de messages:
+- a chaque fois qu&#8217;on recoit un evenement de vue de page on va inserer cet evenement dans une queue.
+- un processus serveur (worker) va regulierement piocher dans cette queue et inserer en batch plusieurs centaines de pagevues a la fois</p></div>
+<div class="paragraph"><p>Cette solution nous permet de lisser la charge en contrepartie d&#8217;un</p></div></aside></section><section id="fix-1-queuing-2"><h2>Fix#1 Queuing</h2><div class="ulist"><ul><li><p>Modify the application &#8658; batch 100 queries</p></li><li><p>Latency</p></li><li><p>Prone to failures</p></li><li><p>Still cannot handle high load</p></li></ul></div></section><section id="fix-2-sharding"><h2>Fix#2 Sharding</h2><div class="ulist"><ul><li><p>Spread the load</p><div class="ulist"><ul><li><p>use multiple database servers</p></li><li><p>spread the PageView table across the servers</p></li><li><p>mapping keys to shards using a hash function</p></li></ul></div></li></ul></div></section><section id="fix-2-sharding-2"><h2>Fix#2 Sharding</h2><div class="imageblock" style=""><div class="content"><img src="images/diag-7b0e127c4d4d3a26cbc9c375259ac602.png" alt="diag 7b0e127c4d4d3a26cbc9c375259ac602" /></div></div></section><section id="fix-2-sharding-3"><h2>Fix#2 Sharding</h2><div class="ulist"><ul><li class="fragment"><p>Impacts</p><div class="ulist"><ul><li><p>distribute the keys to the new servers</p></li><li><p>write to the "right" DB instance</p></li><li><p>agregate data from all the shards !</p></li></ul></div></li></ul></div>
+<div class="ulist"><ul><li class="fragment"><p><strong>Sharding more and more</strong></p><div class="ulist"><ul><li><p>new shards to follow the load</p></li><li><p>repeat the last steps</p></li></ul></div></li></ul></div></section><section id="fix-2-sharding-4"><h2>Fix#2 Sharding</h2><div class="ulist"><ul><li><p><strong>Server failures</strong> are more likely</p><div class="ulist"><ul><li class="fragment"><p><strong>WRITES</strong>: use a pending queue flushed less frequently</p></li><li class="fragment"><p><strong>READS</strong>: a portion of the data is unavailable</p></li></ul></div></li></ul></div>
+<div class="ulist"><ul><li class="fragment"><p>&#8658; <strong>replication</strong></p></li></ul></div></section><section id="fix-3-replication"><h2>Fix#3 Replication</h2><div class="imageblock" style=""><div class="content"><img src="images/diag-d44b573326d7ac87ff35ee85926b2e0e.png" alt="diag d44b573326d7ac87ff35ee85926b2e0e" /></div></div></section><section id="human-failures"><h2>Human failures</h2><div class="paragraph"><p><strong>Distribution hash function = %3</strong></p></div>
+<div class="ulist"><ul><li class="fragment"><p><strong>Data written to the wrong shards</strong></p><div class="ulist"><ul><li><p>redistribute data to the right shard</p></li><li><p>while still accepting queries ?!</p></li></ul></div></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>Qu&#8217;est ce que ce passe si on se rendent compte que on a implemente la fonction de distribution comme un modulo 3?
+Impact? Correction?</p></div></aside></section><section id="human-failures-2"><h2>Human failures</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql"> UPDATE PageView SET page_views = page_views + 2
+ WHERE user_id='42' AND URL='myurl';</code></pre></div></div>
+<div class="paragraph"><p><strong>Increments the number of pageviews + 2</strong></p></div>
+<aside class="notes"><div class="paragraph"><p>Quelle est l&#8217;erreur?
+Impact? Correction?</p></div></aside></section><section id="human-failures-3"><h2>Human failures</h2><div class="imageblock" style=""><div class="content"><img src="images/diag-2c47d69139a3a533431c010803613c85.png" alt="diag 2c47d69139a3a533431c010803613c85" /></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql"> UPDATE PageView SET page_views = page_views + 2
+ WHERE user_id='42' AND URL='myurl';</code></pre></div></div></section><section id="human-failures-4"><h2>Human failures</h2><div class="ulist"><ul><li><p><strong>event logging</strong></p></li></ul></div>
+<div class="imageblock" style=""><div class="content"><img src="images/diag-4576e06f78a4a86018dd5ff5510950fc.png" alt="diag 4576e06f78a4a86018dd5ff5510950fc" /></div></div></section><section id="human-failures-5"><h2>Human failures</h2><div class="ulist"><ul><li><p>Incremental data model</p></li></ul></div>
+<div class="imageblock" style=""><div class="content"><img src="images/diag-a256c255d6c4d711bf4a706223ebf82e.png" alt="diag a256c255d6c4d711bf4a706223ebf82e" /></div></div></section><section id="human-failures-6"><h2>Human failures</h2><div class="ulist"><ul><li><p>Incremental data model &#8658; <strong>immutable data model</strong></p></li></ul></div>
+<div class="imageblock" style=""><div class="content"><img src="images/diag-1063fbc739e2cf40e88ddbfeb2fae90d.png" alt="diag 1063fbc739e2cf40e88ddbfeb2fae90d" /></div></div></section><section id="human-failures-7"><h2>Human failures</h2><div class="ulist"><ul><li><p>incremental data model &#8658; <strong>data corruption</strong></p></li><li><p>hard to correct</p></li></ul></div></section><section id="what-went-wrong"><h2>What went wrong?</h2><div class="imageblock" style=""><div class="content"><img src="images/diag-d44b573326d7ac87ff35ee85926b2e0e.png" alt="diag d44b573326d7ac87ff35ee85926b2e0e" /></div></div>
+<div class="ulist"><ul><li class="fragment"><p>do I build new features for customers?</p></li><li class="fragment"><p>or just dealing with reading/writting the data?</p></li></ul></div></section><section id="what-went-wrong-2"><h2>What went wrong?</h2><div class="ulist"><ul><li><p>a single server cannot take the load</p></li></ul></div>
+<div class="ulist"><ul><li class="fragment"><p>solution / <strong>complexity</strong></p><div class="ulist"><ul><li><p><em>distributed storage</em></p></li><li><p>querying distributed data</p></li><li><p>built a data model that is not resilient</p></li></ul></div></li></ul></div></section><section id="wishlist-1-storage"><h2>Wishlist 1 : Storage</h2><div class="ulist"><ul><li><p><em>We want a better* storage</em>:</p><div class="ulist"><ul><li><p>easy to add/remove nodes (<strong>scalling</strong>)</p></li><li><p>transparent data distribution (<strong>auto-sharding</strong>)</p></li><li><p>handle failures (<strong>auto-replication</strong>)</p></li></ul></div></li></ul></div>
+<div class="paragraph"><p>&#8658; <strong>Distributed databases</strong>: <em>Redis</em>, <strong><em>Cassandra</em></strong>, <strong><em>MongoDB</em></strong></p></div>
+<aside class="notes"><div class="paragraph"><p>Nous voulons une base de donnees qui soit nativement distribuee et qui gere automatiquement la mise a l&#8217;echelle, la replication
+ et la distribution des donnees.</p></div></aside></section><section id="wishlist-2-queries"><h2>Wishlist 2 : Queries</h2><div class="ulist"><ul><li><p><em>We want general pourpose distributed computing</em>:</p><div class="ulist"><ul><li><p>distributed queries + <strong>parallel processing</strong></p></li></ul></div></li></ul></div>
+<div class="paragraph"><p>&#8658; <strong>Distributed data processing engines</strong> : <strong><em>MapReduce</em></strong>, <strong><em>Spark</em></strong></p></div></section><section id="wishlist-3-data-model"><h2>Wishlist 3 : Data model</h2><div class="ulist"><ul><li><p><em>We want a resiliant data model</em>:</p><div class="ulist"><ul><li><p>human error is <strong>unavoidable</strong></p></li><li><p>an <strong>incremental data model</strong> is not resilient</p></li></ul></div></li></ul></div>
+<div class="paragraph"><p>&#8658; <strong>Immutability</strong></p></div></section><section id="plan-3"><h2>Plan</h2><div class="olist arabic"><ol class="arabic"><li><p>Intro</p></li><li><p>From SQL to NoSQL</p><div class="olist loweralpha"><ol class="loweralpha" type="a"><li><p>Scalling a simple application</p></li><li><p><strong>From relational to non-relational databases</strong></p></li></ol></div></li><li><p>Scalling MySQL : @LesFurets.com</p></li><li><p>PostgreSQL + TP</p></li></ol></div></section><section id="from-relational-to-non-relational-databases"><h2>From relational to non-relational databases</h2></section><section id="rdbms-the-good-parts"><h2>RDBMs: the good parts</h2><div class="ulist"><ul><li><p>simple, proven model</p></li><li><p>45+ years of research</p></li><li><p>ACID</p></li><li><p>integration database (shared database pattern)</p></li></ul></div>
+<div class="imageblock" style=""><div class="content"><img src="images/diag-c312047ba3fb62db756eb01a48c4263b.png" alt="diag c312047ba3fb62db756eb01a48c4263b" /></div></div>
+<aside class="notes"><div class="ulist"><ul><li><p>Expensive/slow disks</p></li><li><p>SQL - integration mechanism between application</p></li><li><p>consistent data set</p></li><li><p>changes need to be coordinated &#8594; side effects</p></li><li><p>application database</p><div class="ulist"><ul><li><p>1 database par application/module</p></li><li><p>easier to maintain and evolve</p></li><li><p>SOA / Service autonomy</p></li><li><p>easier to scale</p></li></ul></div></li></ul></div></aside></section><section id="rdbms-impedance-missmatch-1"><h2>RDBMs: impedance missmatch (1)</h2><div class="ulist"><ul><li><p><strong>Relational model</strong>: relations / tuples + normalisation (avoid duplication)</p></li><li><p><strong>Memory</strong>:  rich data structures !</p></li></ul></div>
+<div class="imageblock" style="float: center"><div class="content"><img src="images/impedance_missmatch.png" alt="impedance missmatch" /></div></div></section><section id="rdbms-impedance-missmatch-2"><h2>RDBMs: impedance missmatch (2)</h2><div class="ulist"><ul><li><p><strong>Memory</strong>: object graphs:</p><div class="ulist"><ul><li><p>complex mapping from object to relations &#8594; ORMs</p></li><li><p>leads to performance issues</p><div class="ulist"><ul><li><p>many rows/tables/<strong>JOINS</strong></p></li></ul></div></li></ul></div></li><li><p>Schema evolution:</p><div class="ulist"><ul><li><p>adding an attribute &#8594; adding a whole column</p></li><li><p>expensive locks &#8594; application downtime</p></li></ul></div></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>eagar vs lazy loading</p></li></ul></div></aside></section><section id="rdbms-impedance-missmatch-3"><h2>RDBMs: impedance missmatch (3)</h2><div class="ulist"><ul><li><p><strong>Relational model</strong>: relations / tuples + normalisation (avoid duplication)</p></li><li><p><strong>Semi-structured</strong> data hard to model:</p><div class="ulist"><ul><li><p>blob vs name/value (eg. XML)</p></li></ul></div></li></ul></div>
+<div class="imageblock" style="float: center"><div class="content"><img src="images/impedance_missmatch.png" alt="impedance missmatch" /></div></div></section><section id="rdbms-scalling"><h2>RDBMs: scalling</h2><div class="ulist"><ul><li><p><strong>Scalling</strong> is expensive:</p><div class="ulist"><ul><li><p>scalling writes &#8594; (locking)</p></li><li><p>vertical/horizontal partitioning</p></li></ul></div></li></ul></div>
+<div class="ulist"><ul><li class="fragment"><p><strong>Not a good fit for RDBMs</strong></p><div class="ulist"><ul><li><p>clustered databases &#8658; shared disk paradigm / cluster aware filesystem</p></li><li><p>application level sharding  and replication</p></li></ul></div></li></ul></div>
+<aside class="notes"><div class="ulist"><ul><li><p>bigger machines, size limit  vs clusters of <em>commodity hardware</em></p></li></ul></div></aside></section><section id="not-only-sql"><h2>Not only SQL</h2><div class="ulist"><ul><li><p>2009, Johan Oskarson, #NoSQL meetup for distributed, open-source, non-relational databases</p><div class="ulist"><ul><li><p>not using relational model SQL</p></li><li><p>run on clusters</p></li><li><p>ACID &#8658; tunnable consistency</p></li><li><p>fixed schema &#8658; flexible schema</p></li><li><p><strong>polyglot persistance</strong></p></li></ul></div></li></ul></div></section><section id="sql-models-tuples-and-joins"><h2>SQL models tuples and joins</h2><div class="imageblock" style=""><div class="content"><img src="images/diag-a324a06fc7c4f7ddf6eb834fca4c985e.png" alt="diag a324a06fc7c4f7ddf6eb834fca4c985e" /></div></div>
+<aside class="notes"><div class="paragraph"><p>Les tuples sont des unitees de donnees tres limites : pas d&#8217;imbrication pas de collection.
+La normalisation a pour but d&#8217;eliminer la duplication mais on a besoin de re-coller l&#8217;information de plusieurs tables.
+Dans un contexte distribue les jointures des donnees venant de plusieurs tables est tres couteuse.</p></div></aside></section><section id="nosql-models-agregates"><h2>NoSQL models agregates</h2><div class="ulist"><ul><li><p>collection of related objects that should be treated as a unit (consistency / data management)</p></li></ul></div>
+<div class="imageblock" style=""><div class="content"><img src="images/diag-f36d985de53a040bb3f60cce57df5415.png" alt="diag f36d985de53a040bb3f60cce57df5415" /></div></div></section><section id="modelling-sql-vs-nosql"><h2>Modelling SQL vs NoSQL</h2><div class="ulist"><ul><li><p><em>SQL</em>:</p><div class="ulist"><ul><li><p><strong>model first</strong></p></li><li><p>1 model to guvern them all</p></li></ul></div></li><li><p><em>NoSQL</em>:</p><div class="ulist"><ul><li><p><strong>query first</strong></p></li><li><p>1 data access pattern for each aggregate</p></li></ul></div></li></ul></div></section><section id="nosql-aggregate-types"><h2>NoSQL aggregate types</h2><div class="olist arabic"><ol class="arabic"><li><p>Key-value databases</p></li><li><p>Document-oriented databases</p></li><li><p>Column-oriented databases</p></li><li><p>Graph databases</p></li></ol></div></section><section id="key-value-databases"><h2>Key-value databases</h2><div class="ulist"><ul><li><p>Store and retrieve Blobs based on a primary Key</p><div class="ulist"><ul><li><p><strong><em>HashTable model (K,V)</em></strong></p></li></ul></div></li><li><p>Simplest API that matches REST : PUT/GET/DELETE</p></li></ul></div>
+<div class="ulist"><ul><li class="fragment"><p><strong>Use cases</strong>: Session information, User profiles</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>La valeur n&#8217;est pas requetable, on peux avoir juste le contenu du blob.</p></div></aside></section><section id="document-oriented-databases"><h2>Document oriented databases</h2><div class="ulist"><ul><li><p>Stores and retrieves documents/fragments (XML, JSON&#8230;&#8203;)</p><div class="ulist"><ul><li><p><strong><em>"key-value stores where the value is queryable"</em></strong></p></li></ul></div></li><li><p><strong>Documents</strong>:</p><div class="ulist"><ul><li><p>self-describing, hierarchical tree data structures</p></li><li><p>maps, collections and scalar values</p></li></ul></div></li></ul></div>
+<div class="ulist"><ul><li class="fragment"><p><strong>Use cases</strong>: Event logging, CMS, Product catalog</p></li></ul></div>
+<aside class="notes"></aside></section><section id="column-oriented-databases"><h2>Column oriented databases</h2><div class="ulist"><ul><li><p>Stores data in <strong>column families</strong> as rows that have many columns associated to a row key</p><div class="ulist"><ul><li><p><strong><em>"Map of map model"</em></strong></p></li></ul></div></li></ul></div>
+<div class="imageblock" style="float: center"><div class="content"><img src="images/columnar-databases.png" alt="columnar databases" /></div></div>
+<div class="ulist"><ul><li class="fragment"><p><strong>Use cases</strong>: Time series, Event logging, CMS, Counters</p></li></ul></div></section><section id="graph-databases"><h2>Graph databases</h2><div class="ulist"><ul><li><p>Stores <strong>entities</strong> and <strong>relations</strong> between entities</p><div class="ulist"><ul><li><p><strong>Query:</strong> traversal of the graph</p></li></ul></div></li></ul></div>
+<div class="imageblock" style="float: center"><div class="content"><img src="images/graph-databases.png" alt="graph databases" /></div></div>
+<div class="ulist"><ul><li class="fragment"><p><strong>Use cases</strong>: Social networks, Recommendation engines</p></li></ul></div></section><section id="nosql-not-a-panacea"><h2>NoSQL not a panacea</h2><div class="ulist"><ul><li><p>Tradeoffs:</p><div class="ulist"><ul><li><p>Hadoop: large scale batch computation but <strong>high latency</strong></p></li><li><p>Cassandra: low latency, fin grain storage but <strong>limited data model</strong></p></li></ul></div></li><li><p><strong>ACID</strong> &#8658; tunnable consistence (<strong>CAP</strong>)</p></li><li><p>Incremental architectures &#8658; human failures</p></li></ul></div></section><section id="polyglot-persistance"><h2>Polyglot persistance</h2><div class="ulist"><ul><li><p><strong>agregates</strong> have different requirements (availability/consistance/backup)</p></li><li><p><strong>Mix and match relational and non-relational storages</strong></p></li></ul></div>
+<div class="imageblock" style=""><div class="content"><img src="images/diag-5e0c6a6a5de7ea18bda8566925cbab23.png" alt="diag 5e0c6a6a5de7ea18bda8566925cbab23" /></div></div></section><section id="lambda-architecture"><h2>Lambda architecture</h2><div class="ulist"><ul><li><p>Combine the best of architectures to achieve</p><div class="ulist"><ul><li><p>scalable systems with low latency</p></li><li><p>for arbitrary data problems</p></li><li><p>with human fault tolerance</p></li><li><p>and minimum complexity</p></li></ul></div></li></ul></div></section><section id="plan-4"><h2>Plan</h2><div class="olist arabic"><ol class="arabic"><li><p>Intro</p></li><li><p>From SQL to NoSQL</p></li><li><p><strong>Scalling MySQL : @LesFurets.com</strong></p></li><li><p>PostgreSQL + TP</p></li></ol></div></section><section id="lesfurets-com"><h2>LesFurets.com</h2><div class="ulist"><ul><li><p>Independent insurance agregator</p></li><li><p>Persistance:</p><div class="ulist"><ul><li><p>replicated MySQL database</p></li><li><p>Cassandra / Spark (migration ongoing)</p></li></ul></div></li><li><p>BI/reporting</p><div class="ulist"><ul><li><p>Olap (JasperReports)</p></li><li><p>QlikView dashboarding</p></li></ul></div></li></ul></div></section><section id="mysql-lesfurets"><h2>MySQL @LesFurets</h2><div class="ulist"><ul><li><p>MySQL specific workload</p><div class="ulist"><ul><li><p>few updates</p></li><li><p>few synchronous queries</p></li><li><p>applicative caches</p></li></ul></div></li><li><p>Polyglot persistance</p><div class="ulist"><ul><li><p>SQL</p></li><li><p>XML - blob (MySQL) and file (NFS)</p></li><li><p>ElasticSearch - centralized logging</p></li><li><p>Cassandra/Spark</p></li></ul></div></li></ul></div></section><section id="data-workflow"><h2>Data workflow</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/lf-current-architecture.png" alt="lf current architecture" width="120%" /></div></div></section><section id="architecture"><h2>Architecture</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/architecture_raw.png" alt="architecture raw" width="120%" /></div></div></section><section id="mysql-scale-out"><h2>MySQL scale-out</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/scaleout.png" alt="scaleout" width="100%" /></div></div></section><section id="mysql-scale-out-2"><h2>MySQL scale-out</h2><div class="olist arabic"><ol class="arabic"><li><p>MySQL replication</p><div class="ulist"><ul><li><p>Master-slave : writes/updates only on master</p></li><li><p>one-way (asynchronous) replication</p></li><li><p>SBR (statement based replication)</p></li><li><p>RBR (row base replication)</p></li></ul></div></li><li><p>DRBD mirroring between two masters</p></li><li><p>[MySQL Cluster]</p></li></ol></div></section><section id="sbr"><h2>SBR</h2><div class="ulist"><ul><li><p>send the queries to the slave</p></li><li><p>not all queries are safe for replication</p></li><li><p>same query &#8658; different results (AUTOINCREMENT / TRIGGERS / TRANSACTIONS)</p></li></ul></div></section><section id="rbr"><h2>RBR</h2><div class="ulist"><ul><li><p>send all modified rows to the slave</p></li><li><p>safer but very costly</p></li></ul></div></section><section id="master-slave"><h2>Master/Slave</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/scaleout.png" alt="scaleout" width="100%" /></div></div></section><section id="master-slave-drbd"><h2>Master/Slave + DRBD</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/scaleout_drbd.png" alt="scaleout drbd" width="100%" /></div></div></section><section id="drbd-mirroring"><h2>DRBD mirroring</h2><div class="ulist"><ul><li><p>mirroring a linux partition over IP (sync/async)</p></li></ul></div>
+<div class="imageblock" style="float: center"><div class="content"><img src="images/overview_drbd.gif" alt="overview drbd" /></div></div></section><section id="drbd-ha"><h2>DRBD HA</h2><div class="ulist"><ul><li><p>heartbeat protocol monitors failures</p></li><li><p>triggers service switch via IPFOs</p></li></ul></div>
+<div class="imageblock" style="float: center"><div class="content"><img src="images/ha_drbd.gif" alt="ha drbd" /></div></div>
+<div class="paragraph"><p><a href="http://www.drbd.org/home/feature-list/">more&#8230;&#8203;</a></p></div></section><section id="drbd-recovery"><h2>DRBD recovery</h2><div class="ulist"><ul><li><p>node(s) outage</p><div class="ulist"><ul><li><p>background sync (most up-to date node if both were down)</p></li></ul></div></li></ul></div>
+<div class="ulist"><ul><li class="fragment"><p>replication network outage</p><div class="ulist"><ul><li><p>automatic recovery</p></li></ul></div></li></ul></div>
+<div class="ulist"><ul><li class="fragment"><p>storage subsystem</p><div class="ulist"><ul><li><p>mostly transparent</p></li></ul></div></li><li class="fragment"><p>all network links</p><div class="ulist"><ul><li><p><strong><em>split brain!</em></strong>  both nodes switched to the primary role while disconnected</p></li><li><p><strong><em>Manual intervention needed</em></strong></p></li></ul></div></li></ul></div></section><section id="current-architecture-problems"><h2>Current architecture problems</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/lf-current-architecture-problems.png" alt="lf current architecture problems" width="120%" /></div></div></section><section id="concerns"><h2>Concerns</h2><div class="olist arabic"><ol class="arabic"><li><p>Scale UP limits &#8594; Olap size</p></li><li><p>Scale OUT &#8594;  replication and sharding</p></li><li><p>Replication incidents</p><div class="ulist"><ul><li><p>DRDB split brain</p></li><li><p>broken replication: network incidents<br /></p></li></ul></div></li><li><p><strong><em>MySQL replication &#8658; not guaranteed consistency</em></strong>:</p><div class="ulist"><ul><li><p>slowly diverging Master/Slave</p><div class="ulist"><ul><li><p>not automatic check/resynchronisation &#8594; costly automatic</p></li><li><p>problematic when failover switch</p></li></ul></div></li></ul></div></li></ol></div></section><section id="lambda-architecture-2"><h2>Lambda architecture</h2><div class="ulist"><ul><li><p>Combine best from No-SQL world to achieve</p><div class="ulist"><ul><li><p>scalable systems</p></li><li><p>for arbitrary data problems</p></li><li><p>with human fault tolerance</p></li><li><p>and minimum complexity</p></li></ul></div></li></ul></div></section><section id="lambda-architecture-3"><h2>Lambda architecture</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/lambda-architecture.png" alt="lambda architecture" width="120%" /></div></div></section><section id="on-going-migration"><h2>On-going migration</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/lf-lambda-architecture.png" alt="lf lambda architecture" width="120%" /></div></div></section><section id="on-going-migration-benefits"><h2>On-going migration benefits</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/lf-lambda-architecture-benefits.png" alt="lf lambda architecture benefits" width="120%" /></div></div></section><section id="plan-5"><h2>Plan</h2><div class="olist arabic"><ol class="arabic"><li><p>Intro</p></li><li><p>From SQL to NoSQL</p></li><li><p>Scalling MySQL : @LesFurets.com</p></li><li><p><strong>PostgreSQL + TP</strong></p></li></ol></div></section><section id="postgresql"><h2>PostgreSQL</h2><div class="paragraph"><p><a href="postgres_intro.pdf">Postgres intro, <a href="http://momjian.us/main/presentations/overview.html" class="bare">http://momjian.us/main/presentations/overview.html</a></a></p></div></section><section id="postgresql-2"><h2>PostgreSQL</h2><div class="ulist"><ul><li><p>PostgreSQL</p><div class="ulist"><ul><li><p>Berkeley : Ingres 1974</p></li></ul></div></li><li><p>Extensions</p><div class="ulist"><ul><li><p>custom data types / operators</p></li><li><p>natural-language parsing</p></li><li><p>multidimensional indexing</p></li><li><p>geographic queries</p></li></ul></div></li><li><p>TP &#8658; PostgreSQL &amp; extensions (<em>tablefunc,dict_xsyn, fuzzystrmatch, pg_trgm, cube</em>)</p></li></ul></div>
+<div class="paragraph"><p><a href="http://www.slideshare.net/EnterpriseDB/central-33248126">more&#8230;&#8203;</a></p></div></section><section id="postgresql-offsprings"><h2>PostgreSQL offsprings</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/timeline_postgresql.png" alt="timeline postgresql" /></div></div></section><section id="tp1-installation-de-l-environnement"><h2>TP1: Installation de l&#8217;environnement</h2><div class="olist arabic"><ol class="arabic"><li><p>Démarrez l&#8217;application <strong>Virtualbox</strong></p></li><li><p>Configurez un réseau host-only <strong><em>vboxnet0</em></strong> (File/Preferences/Network puis voir image)</p></li></ol></div>
+<div class="imageblock" style="float: left"><div class="content"><img src="images/vboxnet0.png" alt="vboxnet0" /></div></div></section><section id="tp1-installation-de-l-environnement-2"><h2>TP1: Installation de l&#8217;environnement</h2><div class="olist arabic"><ol class="arabic"><li><p><a href="https://drive.google.com/file/d/0B6Df1Uxh_16cRnpMN2d1dFVMdlU/view?usp=sharing">Telecharger l&#8217;image Virtualbox</a></p></li><li><p>Importez et démarrez la VM</p></li><li><p>Accédez a l&#8217;interface web <a href="https://192.168.X.Y/" class="bare">https://192.168.X.Y/</a> (voir la console de la VM)</p></li></ol></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql">Logins
+PostgreSQL: postgres/bigdata14
+
+(SSH: root/bigdata14)</code></pre></div></div></section><section id="tp1-recherche-et-recommandation"><h2>TP1: Recherche et recommandation</h2><div class="paragraph"><p>Moteur de recherche et recommandation des filmes:</p></div>
+<div class="ulist"><ul><li><p>recherche: textuelle, approximative, phonétique</p></li><li><p>moteur de recommandation très basique</p></li></ul></div></section><section id="tp1-schéma-déjà-créé"><h2>TP1: Schéma (déjà créé)</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql">CREATE TABLE genres (
+        name text UNIQUE,
+        position integer
+);
+CREATE TABLE movies (
+        movie_id SERIAL PRIMARY KEY,
+        title text,
+        genre cube
+);
+CREATE TABLE actors (
+        actor_id SERIAL PRIMARY KEY,
+        name text
+);
+
+CREATE TABLE movies_actors (
+        movie_id integer REFERENCES movies NOT NULL,
+        actor_id integer REFERENCES actors NOT NULL,
+        UNIQUE (movie_id, actor_id)
+);</code></pre></div></div>
+<div style="page-break-after: always;"></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql">CREATE INDEX movies_actors_movie_id ON movies_actors (movie_id);
+CREATE INDEX movies_actors_actor_id ON movies_actors (actor_id);
+CREATE INDEX movies_genres_cube ON movies USING gist (genre);</code></pre></div></div>
+<div class="paragraph"><p><a href="scripts/create_movies.sql">Create schema script</a>
+<a href="scripts/movies_data.sql">Import data script</a></p></div></section><section id="tp1-recherche"><h2>TP1: Recherche</h2><div class="ulist"><ul><li><p><strong><em>Recherche exacte / pattern matching</em></strong></p></li><li><p><strong><em>Distance de Levenshtein</em></strong> &#8594; typos simples</p></li><li><p><strong><em>N-gram/similarité</em></strong> &#8594; trouver les erreurs modérées</p></li><li><p><strong><em>Full text match @@</em></strong> &#8594; similarité grammaticale</p></li><li><p><strong><em>Métaphone</em></strong> &#8594; similarité phonétique</p></li></ul></div></section><section id="tp1-recherche-textuelle-patterns"><h2>TP1: Recherche textuelle/patterns</h2><div class="paragraph"><p>Utilisez les opérateurs <a href="http://docs.postgresql.fr/9.1/functions-matching.html">LIKE ou RegEX</a> pour les requêtes suivantes:</p></div>
+<div class="olist arabic"><ol class="arabic"><li><p>Tous les filmes qui ont le mot <strong><em>stardust</em></strong> dans leur nom.</p></li><li><p>Compter tous les filmes dont le titre ne commence pas par le mot <strong><em>the</em></strong></p></li><li><p>Tous les filmes qui ont le mot <strong><em>war</em></strong> dans le titre mais pas en dernière position</p></li></ol></div>
+<div class="ulist"><ul><li class="fragment"><p>Afficher le plan d&#8217;exécution de la dernière requête(EXPLAIN).</p></li></ul></div></section><section id="tp1-distance-levenshtein"><h2>TP1: Distance Levenshtein</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/distance_levenshtein.jpg" alt="distance levenshtein" width="70%" /></div></div>
+<div class="ulist"><ul><li><p>Opérations: <strong>S</strong>ubstitute, <strong>I</strong>nsert, <strong>D</strong>elete</p></li><li><p>Distance <em>Levenshtein</em> : nb minimal d&#8217;opérations</p></li></ul></div></section><section id="tp1-distance-levenshtein-2"><h2>TP1: Distance Levenshtein</h2><div class="paragraph"><p>Utilisez les fonctions du package <a href="http://docs.postgresql.fr/9.1/fuzzystrmatch.html">fuzzystrgmatch</a> pour trouver :</p></div>
+<div class="olist arabic"><ol class="arabic"><li><p>La distance levenshtein entre les mots <strong><em>execution</em></strong> et <strong><em>intention</em></strong></p></li><li><p>Tous les films qui sont a une distance <em>levenshtein</em> inférieure a 9 de la chaine suivante: <strong><em>a hard day nght</em></strong></p></li></ol></div>
+<div class="paragraph"><p><a href="http://docs.postgresql.fr/9.1/fuzzystrmatch.html">Documentation fuzzystrgmatch</a></p></div></section><section id="tp1-n-gram"><h2>TP1: N-gram</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/n-gram.png" alt="n gram" width="100%" /></div></div></section><section id="tp1-n-gram-similarity-search"><h2>TP1: N-gram, similarity search</h2><div class="imageblock" style="float: center"><div class="content"><img src="images/ngram-similarity.png" alt="ngram similarity" width="100%" /></div></div></section><section id="tp1-n-gram-similarity-search-em-em"><h2>TP1: N-gram, similarity search (<em>%</em>)</h2><div class="paragraph"><p>Écrivez les requêtes pour trouver :</p></div>
+<div class="olist arabic"><ol class="arabic"><li><p>Tous les tri-grammes du mot <strong><em>Avatar</em></strong></p></li><li><p>La similarité entre <strong><em>VOTKA</em></strong> et <strong><em>VODKA</em></strong></p></li><li><p>Tous les filmes dont le titre est similaire a plus de 0.1% du titre <strong><em>Avatar</em></strong> .</p></li></ol></div></section><section id="tp1-full-text-search"><h2>TP1: Full text search</h2><hr />
+<div class="paragraph"><p>Trouver les filmes qui contiennent les formes grammaticales des mots 'night' et 'day':</p></div>
+<div class="paragraph"><p>(ignorer les mots de liaison/ pluriel/etc..)</p></div>
+<div class="paragraph"><p>Algorithme:</p></div>
+<div class="olist arabic"><ol class="arabic"><li><p><strong><em>extraire les racine des mots (lexèmes)</em></strong> &#8594; <strong><em>spécifiques au langage !</em></strong></p></li><li><p>comparer les vecteurs des lexèmes</p></li></ol></div></section><section id="tp1-full-text-search-2"><h2>TP1: Full text search</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql">SELECT to_tsvector('A Hard Day''s Night'),
+     to_tsquery('english', 'night &amp; day');
+
+       to_tsvector         |   to_tsquery
+---------------------------+-----------------
+'day':3 'hard':2 'night':5 | 'night' &amp; 'day'</code></pre></div></div>
+<div class="ulist"><ul><li><p><strong><em>tsvector</em></strong> : lexèmes :position</p></li><li><p><strong><em>tsquery</em></strong> : lexèmes séparées par &amp;</p></li><li><p><strong><em>specifique au language !</em></strong></p></li></ul></div></section><section id="full-text-search"><h2>Full text search</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql">SELECT title
+FROM movies
+WHERE to_tsvector(title) @@ to_tsquery('english', 'night &amp; day');</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql">SELECT title
+FROM movies
+WHERE title @@ 'night &amp; day';
+
+A Hard Day’s Night
+Six Days Seven Nights
+Long Day’s Journey Into Night</code></pre></div></div></section><section id="tp1-recherche-phonétique"><h2>TP1: Recherche phonétique</h2><div class="ulist"><ul><li><p>plusieurs fonctions pour la codification phonétique des mots</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql">SELECT name, dmetaphone(name), dmetaphone_alt(name),
+  metaphone(name, 8), soundex(name)
+FROM actors;
+
+     name      | dmetaphone | dmetaphone_alt | metaphone | soundex
+---------------+------------+----------------+-----------+--------
+50 Cent        | SNT        | SNT            | SNT       | C530
+Aaron Eckhart  | ARNK       | ARNK           | ARNKHRT   | A652
+Agatha Hurle   | AK0R       | AKTR           | AK0HRL    | A236</code></pre></div></div>
+<div class="paragraph"><p><a href="http://docs.postgresql.fr/9.1/fuzzystrmatch.html">Documentation fuzzystrmatch&#8230;&#8203;</a></p></div></section><section id="tp1-recherche-phonétique-2"><h2>TP1: Recherche phonétique</h2><div class="olist arabic"><ol class="arabic"><li><p>Trouver les filmes qui ont des acteurs dont les noms se prononcent pareil.</p></li><li><p>Trouver les acteurs avec un nom similaire a <strong><em>Robin Wiliams</em></strong>, triés par similarité (combiner %, metaphone et levenshtein):</p></li></ol></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql"> actor_id | name
+----------+-----------------
+     4093 | Robin Williams
+     2442 | John Williams
+     4479 | Steven Williams
+     4090 | Robin Shou</code></pre></div></div></section><section id="tp1-search"><h2>TP1: Search</h2><div class="ulist"><ul><li><p><strong><em>Recherche exacte / pattern matching</em></strong></p></li><li><p><strong><em>Distance de Levenstein</em></strong> &#8594; typos simples</p></li><li><p><strong><em>N-gram/similarite</em></strong> &#8594; trouver les erreurs modérées</p></li><li><p><strong><em>Full text match @@</em></strong> &#8594; similarité grammaticale</p></li><li><p><strong><em>Métaphone</em></strong> &#8594; similarité phonétique</p></li></ul></div></section><section id="tp1-recherche-multi-dimensionnelle"><h2>TP1: Recherche multi-dimensionnelle</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql">CREATE TABLE movies (
+        movie_id SERIAL PRIMARY KEY,
+        title text,
+        genre cube <i class="conum" data-value="1"></i><b>(1)</b>
+);
+
+INSERT INTO movies (movie_id,title,genre) VALUES
+(1,'Star Wars',
+'(0,7,0,0,0,0,0,0,0,7,0,0,0,0,10,0,0,0)') <i class="conum" data-value="2"></i><b>(2)</b>
+),</code></pre></div></div>
+<div class="ulist"><ul><li><p>on utilise le type cube &lt;1&gt; pour mapper les notes sur un vecteur n-dimensionnel de valeurs (= score du film &lt;2&gt;)</p></li></ul></div></section><section id="tp1-recherche-multi-dimensionnelle-2"><h2>TP1: Recherche multi-dimensionnelle</h2><div class="ulist"><ul><li><p>les noms pour les dimensions sont définis dans la table genres</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql">CREATE TABLE genres (
+	name text UNIQUE,
+	position integer
+);
+
+INSERT INTO genres (name,position) VALUES
+('Action',1),
+('Adventure',2),
+('Animation',3),
+...
+('Sport',16),
+('Thriller',17),
+('Western',18);</code></pre></div></div></section><section id="tp1-recherche-multi-dimensionnelle-3"><h2>TP1: Recherche multi-dimensionnelle</h2><div class="paragraph"><p>Utiliser le module <a href="http://docs.postgresql.fr/9.1/cube.html">cube</a> pour recommander des filmes <strong><em>similaires</em></strong> (du même genre)</p></div>
+<div class="ulist"><ul><li><p>Afficher les notes du film <strong><em>Star Wars</em></strong></p></li><li><p>Quelle est la note du film  <strong><em>Star Wars</em></strong> dans la catégorie 'Animation'</p></li><li><p>Afficher les films avec les meilleurs notes dans la catégorie SciFi</p></li></ul></div></section><section id="tp1-recherche-multi-dimensionnelle-4"><h2>TP1: Recherche multi-dimensionnelle</h2><div class="ulist"><ul><li><p>Afficher les filmes similaire (<strong>cube_distance</strong>) a <strong><em>Star Wars</em></strong> (vecteur = (0, 7, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 10, 0, 0, 0) ) du plus similaire au moins similaire</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>                    title                      |       dist
+-----------------------------------------------+------------------
+Star Wars                                      |                0
+Star Wars: Episode V - The Empire Strikes Back |                2
+Avatar                                         |                5
+Explorers                                      | 5.74456264653803
+Krull                                          | 6.48074069840786
+E.T. The Extra-Terrestrial                     | 7.61577310586391</code></pre></div></div>
+<div class="ulist"><ul><li><p>Écrivez une requête pour trouver les filmes qui sont a moins de 5 points de différence sur chaque dimension (utiliser <em>cube_enlarge</em> et <em>@&gt;</em> ).</p></li></ul></div></section></section>
+<section><section id="annexe"><h2>Annexe</h2></section><section id="tp1-installation-en-détail"><h2>TP1: Installation en détail</h2><div class="paragraph"><p><a href="http://doc.fedora-fr.org/wiki/Installation_et_configuration_de_PostgreSQL">Fedora</a>
+<a href="http://doc.ubuntu-fr.org/postgresql">Ubuntu</a></p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="ruby language-ruby">yum install postgresql postgresql-server postgresql-contrib <i class="conum" data-value="1"></i><b>(1)</b>
+postgresql-setup initdb <i class="conum" data-value="2"></i><b>(2)</b>
+
+systemctl start postgresql.service <i class="conum" data-value="3"></i><b>(3)</b>
+
+yum install pgadmin3   <i class="conum" data-value="4"></i><b>(4)</b>
+
+CREATE EXTENSION tablefunc; <i class="conum" data-value="5"></i><b>(5)</b>
+CREATE EXTENSION dict_xsyn;
+CREATE EXTENSION fuzzystrmatch;
+CREATE EXTENSION pg_trgm;
+CREATE EXTENSION cube;</code></pre></div></div>
+<div class="colist arabic"><table><tr><td><i class="conum" data-value="1"></i><b>1</b></td><td>Instalation du client/serveur/extensions suplementaires</td></tr><tr><td><i class="conum" data-value="2"></i><b>2</b></td><td>Initialisation de la base</td></tr><tr><td><i class="conum" data-value="3"></i><b>3</b></td><td>Demarage du serveur</td></tr><tr><td><i class="conum" data-value="4"></i><b>4</b></td><td>Front-end requetage</td></tr><tr><td><i class="conum" data-value="5"></i><b>5</b></td><td>Installation des extensions <a href="http://www.postgresql.org/docs/9.1/static/catalog-pg-extension.html">Verifier les extensions installees</a></td></tr></table></div></section><section id="postgresql-3"><h2>PostgreSQL</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="sql language-sql">CREATE INDEX  [ nom ] ON table [ USING method ]
+    ( { colonne | ( expression ) } [ classeop ]  ... )</code></pre></div></div>
+<div class="ulist"><ul><li><p><strong><em>method</em></strong>: btree/hash/gin/gist</p></li><li><p><strong><em>classeop</em></strong> : operator class that can use the index</p></li></ul></div>
+<div class="paragraph"><p><a href="http://docs.postgresql.fr/9.0/sql-createindex.html">Documentation</a></p></div></section><section id="ressources"><h2>Ressources:</h2><div class="paragraph"><p><a href="https://www.manning.com/books/big-data">Bigdata - Nathan Marz book</a></p></div>
+<div class="imageblock" style="float: right"><div class="content"><img src="images/nosql_distilled.jpg" alt="nosql distilled" width="75" /></div></div>
+<div class="paragraph"><p><a href="http://martinfowler.com/books/nosql.html">NoSQL Distilled - Martin Fowler</a></p></div>
+<div class="imageblock" style="float: right"><div class="content"><img src="images/7databases.jpg" alt="7databases" width="75" /></div></div>
+<div class="paragraph"><p><a href="https://pragprog.com/book/rwdata/seven-databases-in-seven-weeks">7 databases</a></p></div>
+<div class="imageblock" style="float: right"><div class="content"><img src="images/postgres-book.jpg" alt="postgres book" width="75" /></div></div>
+<div class="paragraph"><p><a href="http://static.googleusercontent.com/media/research.google.com/fr//archive/bigtable-osdi06.pdf">BigTable paper</a></p></div>
+<div class="paragraph"><p><a href="https://gist.github.com/Kartones/dd3ff5ec5ea238d4c546">Postgres cheatsheat</a></p></div>
+<div class="paragraph"><p><a href="http://grouplens.org/datasets/movielens/">MovieLens dataset</a></p></div></section></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script type="text/javascript">// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: true,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'simple',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 1024,
+  height: 800,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.2,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>
